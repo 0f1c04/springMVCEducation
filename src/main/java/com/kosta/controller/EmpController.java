@@ -1,7 +1,7 @@
 package com.kosta.controller;
 
 import com.kosta.business.DeptServiceInterface;
-import com.kosta.business.EmpService;
+import com.kosta.business.EmpServiceInterface;
 import com.kosta.model.EmpVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class EmpController {
 
 	@Autowired
-	EmpService empService;
+    EmpServiceInterface empService;
 	
 	@Autowired
 	DeptServiceInterface deptService;

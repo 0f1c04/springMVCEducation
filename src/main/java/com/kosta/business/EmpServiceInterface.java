@@ -6,7 +6,7 @@ import com.kosta.model.JobVO;
 import java.sql.*;
 import java.util.List;
 
-public interface EmpService {
+public interface EmpServiceInterface {
     EmpVO loginChk(int empid, String email);
 
     List<JobVO> selectAllJobs();

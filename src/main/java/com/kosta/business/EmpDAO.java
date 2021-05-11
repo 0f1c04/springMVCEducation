@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.kosta.util.DBUtil;
 
 //DAO(Data Access Object)
-@Repository
+@Repository("empDAO_jdbc")
 public class EmpDAO implements EmpDAOInterface{
 
 	@Autowired
