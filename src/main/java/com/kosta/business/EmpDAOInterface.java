@@ -34,4 +34,6 @@ public interface EmpDAOInterface {
     List<EmpVO> selectByName(String ch);
 
     List<EmpVO> selectByCondition(int deptid, String jobid, int sal, Date hdate);
+
+    List<EmpVO> selectByDeptMany(List<Integer> deptlist);
 }

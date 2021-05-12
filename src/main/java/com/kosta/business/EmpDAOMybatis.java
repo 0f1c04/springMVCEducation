@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("empDAO_mybatis")
 public class EmpDAOMybatis implements EmpDAOInterface{
@@ -19,7 +21,10 @@ public class EmpDAOMybatis implements EmpDAOInterface{
 
     @Override
     public EmpVO loginChk(int empid, String email) {
-        return null;
+        Map<String, Object> empInfo = new HashMap<>();
+        empInfo.put("empid", empid);
+        empInfo.put("email", email);
+        return sqlSession.selectOne(namespace + "loginChk", empInfo);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class EmpDAOMybatis implements EmpDAOInterface{
 
     @Override
     public List<EmpVO> selectByDept(int deptid) {
-        return sqlSession.selectOne(namespace+"selectByDept", deptid);
+        return sqlSession.selectList(namespace+"selectByDept", deptid);
     }
 
     @Override
@@ -64,17 +69,32 @@ public class EmpDAOMybatis implements EmpDAOInterface{
 
     @Override
     public List<EmpVO> selectBySalary(int minsal, int maxsal) {
-        return null; //몰라
+        Map<String, Integer> salMap = new HashMap<>();
+        salMap.put("min", minsal);
+        salMap.put("max", maxsal);
+
+        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectBySalary", salMap);
+        return emplist;
     }
 
     @Override
     public List<EmpVO> selectByDate(String sdate, String edate) {
-        return null; //몰라
+        Map<String, String> salMap = new HashMap<>();
+        salMap.put("sdate", sdate);
+        salMap.put("edate", edate);
+
+        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByDate", salMap);
+        return emplist;
     }
 
     @Override
     public List<EmpVO> selectByDate2(Date sdate, Date edate) {
-        return null; //몰라
+        Map<String, Date> salMap = new HashMap<>();
+        salMap.put("sdate", sdate);
+        salMap.put("edate", edate);
+
+        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByDate", salMap);
+        return emplist;
     }
 
     @Override
@@ -84,6 +104,18 @@ public class EmpDAOMybatis implements EmpDAOInterface{
 
     @Override
     public List<EmpVO> selectByCondition(int deptid, String jobid, int sal, Date hdate) {
-        return null; //몰라
+        Map<String, Object> map = new HashMap<>();
+        map.put("deptid", deptid);
+        map.put("jobid", jobid);
+        map.put("sal", sal);
+        map.put("hdate", hdate);
+        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByCondition", map);
+        return emplist;
+    }
+
+    @Override
+    public List<EmpVO> selectByDeptMany(List<Integer> deptlist) {
+        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByDeptMany", deptlist);
+        return emplist;
     }
 }

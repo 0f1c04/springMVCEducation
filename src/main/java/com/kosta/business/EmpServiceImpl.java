@@ -84,4 +84,9 @@ public class EmpServiceImpl implements EmpServiceInterface {
     public List<EmpVO> selectByCondition(int deptid, String jobid, int sal, Date hdate) {
         return empDAO.selectByCondition(deptid, jobid, sal, hdate);
     }
+
+    @Override
+    public List<EmpVO> selectByDeptMany(List<Integer> deptlist) {
+        return empDAO.selectByDeptMany(deptlist);
+    }
 }

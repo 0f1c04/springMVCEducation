@@ -388,7 +388,12 @@ public class EmpDAO implements EmpDAOInterface{
 		}
 		return emplist;
 	}
-	
+
+	@Override
+	public List<EmpVO> selectByDeptMany(List<Integer> deptlist) {
+		return null;
+	}
+
 
 	private EmpVO makeEmp(ResultSet rs) throws SQLException {
 		EmpVO emp = new EmpVO();

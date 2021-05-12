@@ -3,10 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+
     <typeAliases>
         <typeAlias type="com.kosta.model.DeptVO" alias="dvo"/>
         <typeAlias type="com.kosta.model.EmpVO" alias="evo"/>
     </typeAliases>
+
     <!-- <environments default="development">
       <environment id="development">
         <transactionManager type="JDBC"/>

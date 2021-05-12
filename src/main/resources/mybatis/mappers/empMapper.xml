@@ -78,4 +78,62 @@
         where EMPLOYEE_ID = #{employee_id}
     </delete>
 
+    <select id="loginChk" parameterType="map" resultType="evo">
+        select *
+        from employees
+        where employee_id = #{empid}
+          and email = #{email}
+    </select>
+
+    <select id="selectBySalary" resultType="evo" parameterType="map">
+        select *
+        from EMPLOYEES
+        where salary between #{min} and #{max}
+    </select>
+
+    <select id="selectByDate" resultType="evo" parameterType="map">
+        select *
+        from EMPLOYEES
+        where HIRE_DATE between #{sdate} and #{edate}
+    </select>
+
+    <select id="selectByDate2" resultType="evo" parameterType="map">
+        select *
+        from EMPLOYEES
+        where HIRE_DATE between #{sdate} and #{edate}
+    </select>
+
+    <select id="selectByCondition" parameterType="map" resultType="evo">
+        select *
+        from EMPLOYEES
+        <where>
+            <if test="jobid != '' and jobid != null">
+                JOB_ID = #{jobid}
+            </if>
+            <if test="deptid != 0 and deptid != null">
+                and DEPARTMENT_ID = #{deptid}
+            </if>
+            <if test="sal != 0 and sal != null">
+                and SALARY >= #{sal}
+            </if>
+            <if test="hdate != null">
+                and HIRE_DATE >= #{hdate, jdbcType=DATE}
+            </if>
+        </where>
+        order by employee_id
+    </select>
+
+    <sql id="empQuery">
+        select *
+        from EMPLOYEES
+    </sql>
+
+    <select id="selectByDeptMany" parameterType="java.util.List" resultType="evo">
+        <include refid="empQuery"/>
+        where DEPARTMENT_ID in
+        <foreach collection="list" index="index" item="dept" open="("  separator="," close=")">
+            #{dept}
+        </foreach>
+        order by employee_id
+    </select>
 </mapper>

@@ -33,6 +33,16 @@
   </tr>
 </c:forEach>
 </table>
+<hr>
+<c:set var="cpath" value="${pageContext.request.contextPath}"/>
+<form action="${cpath}/emp/selectByDeptMany.do">
+    <select name="deptlist" multiple="multiple">
+        <c:forEach items="${deptlist}" var="dept">
+            <option value="${dept.department_id}">${dept.department_name}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" value="여러 부서의 직원들 조회">
+</form>
 <script>
 function call(deptid){
 	location.href="deptDelete.do?deptid=" + deptid;
