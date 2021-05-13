@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import com.kosta.model.EmpVO;
 import com.kosta.model.JobVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.kosta.util.DBUtil;
@@ -24,6 +25,7 @@ import com.kosta.util.DBUtil;
 public class EmpDAO implements EmpDAOInterface{
 
 	@Autowired
+	@Qualifier("dataSource")
 	DataSource datasource;
 	
 	//CRUD(Create:insert, Read:select U:Update, D:Delete)	

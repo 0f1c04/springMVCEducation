@@ -3,6 +3,8 @@ package com.kosta.controller;
 import com.kosta.business.DeptServiceInterface;
 import com.kosta.business.EmpServiceInterface;
 import com.kosta.model.EmpVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +27,15 @@ public class EmpController {
 	
 	@Autowired
 	DeptServiceInterface deptService;
+
+	Logger logger = LoggerFactory.getLogger(EmpController.class);
 	
 	@RequestMapping("/emp/emplist.do")
 	public String emplist(Model model) {
+		logger.warn("emplist.do 요청 warn");
+		logger.info("emplist.do 요청 info");
+		logger.debug("emplist.do 요청 debug");
+
 		model.addAttribute("emp_all", empService.selectAll());
 		return "emp/emplist"; //forward
 	}

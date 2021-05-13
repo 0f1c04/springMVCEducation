@@ -3,6 +3,8 @@ package com.kosta.business;
 import com.kosta.model.EmpVO;
 import com.kosta.model.JobVO;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,8 @@ public class EmpDAOMybatis implements EmpDAOInterface{
 
     String namespace = "com.kosta.emp.";
 
+    Logger logger = LoggerFactory.getLogger(EmpDAOMybatis.class);
+
     @Override
     public EmpVO loginChk(int empid, String email) {
         Map<String, Object> empInfo = new HashMap<>();
@@ -29,12 +33,16 @@ public class EmpDAOMybatis implements EmpDAOInterface{
 
     @Override
     public List<JobVO> selectAllJobs() {
+        List<JobVO> jlist = sqlSession.selectList(namespace+"selectAllJobs");
+        logger.info("{}건", jlist.size());
         return sqlSession.selectList(namespace+"selectAllJobs");
     }
 
     @Override
     public int deleteEmp(int empid) {
-        return sqlSession.delete(namespace+"delete", empid);
+        int result = sqlSession.delete(namespace + "delete", empid);
+        logger.info("{}건이 삭제되었습니다.",result); //placeholder
+        return result;
     }
 
     @Override

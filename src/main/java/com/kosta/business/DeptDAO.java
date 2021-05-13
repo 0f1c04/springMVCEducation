@@ -10,6 +10,7 @@ import com.kosta.model.DeptVO;
 import com.kosta.model.LocationVO;
 import com.kosta.model.ManagerVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -20,9 +21,11 @@ import com.kosta.util.DBUtil;
 public class DeptDAO implements DeptDAOInterface {
 
     @Autowired
+    @Qualifier("dataSource")
     DataSource datasource;
 
     @Autowired
+    @Qualifier("jdbcTemplate")
     JdbcTemplate jdbcTemplate;
 
     public List<ManagerVO> findAllManager() {
