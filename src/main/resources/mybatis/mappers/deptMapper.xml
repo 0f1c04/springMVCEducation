@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.dept">
 
+    <!-- getter, setter의 이름이 다를 때 column을 property에 매칭시켜 줄 수 있음, 우리는 같음 -->
     <resultMap type="dvo" id="deptResult">
         <result property="department_id" column="department_id"/>
         <result property="department_name" column="department_name"/>
@@ -10,39 +13,39 @@
     </resultMap>
 
     <select id="selectAll" resultMap="deptResult">
-        select *
-        from departments
-        order by 1
+        select * from departments order by 1
     </select>
+
     <select id="selectById" resultType="dvo" parameterType="int">
-        select *
-        from departments
-        where department_id = #{aa}
+        select * from departments where department_id = #{aa}
     </select>
-    <insert id="insert" parameterType="dvo">
-        insert into DEPARTMENTS(DEPARTMENT_ID, DEPARTMENT_NAME, MANAGER_ID, LOCATION_ID)
-        values (#{department_id}, #{department_name}, #{manager_id}, #{location_id})
+
+    <insert id="insert" parameterType="dvo"> <!-- 여러개가 와야하면 VO가 제일 좋고 map을 써도 가능함 -->
+        insert into departments(department_id, department_name, manager_id, location_id)
+        values(#{department_id}, #{department_name}, #{manager_id}, #{location_id} )
     </insert>
     <update id="update" parameterType="com.kosta.model.DeptVO">
         update departments
-        set department_name=#{department_name},
-            manager_id=#{manager_id},
-            location_id=#{location_id}
+        set department_name = #{department_name}, manager_id = #{manager_id}, location_id = #{location_id}
         where department_id = #{department_id}
     </update>
+
     <delete id="delete" parameterType="int">
-        delete
-        from departments
-        where department_id = #{department_id}
+        delete from departments where department_id = #{department_id}
     </delete>
+
     <select id="selectAllManager" resultType="com.kosta.model.ManagerVO">
-        select employee_id as manager_id, first_name || last_name fullname
+        select employee_id manager_id, first_name||last_name fullname
         from EMPLOYEES
         where employee_id in (select distinct manager_id from employees)
     </select>
+
     <select id="selectAllLocation" resultType="com.kosta.model.LocationVO">
-        select *
-        from locations
-        order by city
+        select * from locations order by city
     </select>
 </mapper>
+
+
+
+
+

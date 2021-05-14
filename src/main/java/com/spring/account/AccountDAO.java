@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class AccountDAO {
+	
 	@Autowired
 	private SqlSession sqlSession;
+
 
 	public void updateBalance1() throws DataAccessException {
 		sqlSession.update("com.kosta.account.update1");

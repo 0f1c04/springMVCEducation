@@ -7,15 +7,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+@Transactional(propagation=Propagation.REQUIRED)
 public class AccountService {
-
+	
 	@Autowired
 	private AccountDAO accDAO;
 
-	//Ïù¥Ï≤¥
+	
+
 	public void sendMoney() throws DataAccessException {
-		accDAO.updateBalance1(); //Ï∂úÍ∏à
-		accDAO.updateBalance2(); //ÏûÖÍ∏à
+		accDAO.updateBalance1(); //√‚±›
+		accDAO.updateBalance2(); //¿‘±›
 	}
 }
+
+

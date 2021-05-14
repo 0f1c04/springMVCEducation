@@ -1,75 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>/WEB-INF/spring/appServlet/oracledb.properties</value>
-            </list>
-        </property>
+
+
+    <!--
+        <bean id="aa"
+            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>classpath:/oracledb.properties</value>
+                </list>
+            </property>
+        </bean> -->
+
+
+
+    <!-- 방법1 <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="${jdbc.driverClassName}" /> <property
+        name="url" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}"
+        /> <property name="password" value="${jdbc.password}" /> </bean> -->
+    <!-- 방법2 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" /> <property
+        name="url" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}"
+        /> <property name="password" value="${jdbc.password}" /> </bean> -->
+    <!-- 방법3 <bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${jdbc.driverClassName}" /> <property name="url"
+        value="${jdbc.url}" /> <property name="username" value="${jdbc.username}"
+        /> <property name="password" value="${jdbc.password}" /> </bean> -->
+    <!-- 방법4 apache의 DBCP <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" /> <property
+        name="url" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}"
+        /> <property name="password" value="${jdbc.password}" /> </bean> -->
+    <!-- 방법5 jndi -->
+    <!-- <jee:jndi-lookup id="dataSource"
+        jndi-name="jdbc/myoracle" resource-ref="true"></jee:jndi-lookup> -->
+
+
+    <!-- sqlSession을 만들어 주는 역할 -->
+    <!-- <bean id="sqlSessionFactory"
+        class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation"
+            value=" classpath:mybatis/sqlConfig.xml" />
+        <property name="mapperLocations"
+            value=" classpath:mybatis/mappers/*Mapper.xml" />
+    </bean> -->
+    <!-- sqlSession은 SQL문 실행 -->
+    <!-- <bean id="sqlSession"
+        class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory"></constructor-arg>
+    </bean> -->
+
+
+
+
+
+
+
+    <!-- <bean id="jdbcTemplate"
+        class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean> -->
+
+    <!-- <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceOriginal" /> <property name="logFormatter">
+        <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"> <property name="loggingType"
+        value="MULTI_LINE"></property> <property name="sqlPrefix" value="[ SQL문장
+        ] "></property> </bean> </property> </bean> -->
+    <!-- <bean id="dataSourceSpied"
+        class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
     </bean>
 
-    <!--        <bean id="dataSource"-->
-    <!--              class="org.springframework.jdbc.datasource.SimpleDriverDataSource">-->
-    <!--            <property name="driverClass" value="${jdbc.driverClassName}" />-->
-    <!--            <property name="url" value="${jdbc.url}" />-->
-    <!--            <property name="username" value="${jdbc.username}" />-->
-    <!--            <property name="password" value="${jdbc.password}" />-->
-    <!--        </bean>-->
 
-    <!--    <bean id="dataSource"-->
-    <!--          class="org.apache.commons.dbcp2.BasicDataSource">-->
-    <!--        <property name="driverClassName" value="${jdbc.driverClassName}"/>-->
-    <!--        <property name="url" value="${jdbc.url}"/>-->
-    <!--        <property name="username" value="${jdbc.username}"/>-->
-    <!--        <property name="password" value="${jdbc.password}"/>-->
-    <!--    </bean>-->
-
-    <!--        <bean id="dataSource"-->
-    <!--              class="org.apache.ibatis.datasource.pooled.PooledDataSource">-->
-    <!--            <property name="driver" value="${jdbc.driverClassName}" />-->
-    <!--            <property name="url" value="${jdbc.url}" />-->
-    <!--            <property name="username" value="${jdbc.username}" />-->
-    <!--            <property name="password" value="${jdbc.password}" />-->
-    <!--        </bean>-->
-
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="dataSourceSpied"
-          class="org.apache.ibatis.datasource.pooled.PooledDataSource">
-        <property name="driver" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
-
-    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
-        <constructor-arg ref="dataSourceSpied"/>
+    <bean id="dataSource"
+        class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceSpied" />
         <property name="logFormatter">
             <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
                 <property name="loggingType" value="MULTI_LINE"></property>
                 <property name="sqlPrefix" value="[ SQL문장 ] "></property>
             </bean>
         </property>
-    </bean>
+    </bean> -->
 
-    <!-- sqlSession을 만들어주는 역할 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:mybatis/sqlConfig.xml"/>
-        <property name="mapperLocations" value="classpath:mybatis/mappers/*Mapper.xml"/>
-    </bean>
 
-    <!-- sqlSession은 SQL문 실행 -->
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactory"/>
-    </bean>
+
+
+
+
 
 
 </beans>

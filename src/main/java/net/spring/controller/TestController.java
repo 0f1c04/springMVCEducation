@@ -1,29 +1,34 @@
 package net.spring.controller;
 
-import com.kosta.model.DeptVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-@RequestMapping(value = "hello.do", method = RequestMethod.GET)
-public class TestController {
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView helloGet() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("title", "hello.doë¥¼ ìš”ì²­...GET");
-        mv.addObject("dept", new DeptVO(10, "ê°œë°œë¶€", 100, 1700));
-        mv.setViewName("test/helloForm");
-        return mv;
-    }
+import com.kosta.model.DeptVO;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView helloPost() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("title", "hello.doë¥¼ ìš”ì²­...POST");
-        mv.addObject("dept", new DeptVO(10, "ê°œë°œë¶€", 100, 1700));
-        mv.setViewName("test/helloResult");
-        return mv;
-    }
+@Controller
+@RequestMapping("hello.do")
+public class TestController {
+	
+	@RequestMapping(method = RequestMethod.GET) //value´Â »ý·«µÇ¾î ÀÖ´Âµ¥ ¾È¾²¸é get¿äÃ»
+	public ModelAndView helloGet() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("title", "hello.do¸¦ ¿äÃ»ÇÔ...Get¿äÃ»");
+		mv.addObject("dept", new DeptVO(10,"°³¹ßºÎ",100,1700));
+		mv.setViewName("test/helloForm");
+		return mv;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST) 
+	public ModelAndView helloPost() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("title", "hello.do¸¦ ¿äÃ»ÇÔ...Post¿äÃ»");
+		mv.addObject("dept", new DeptVO(10,"°³¹ßºÎ",100,1700));
+		mv.setViewName("test/helloResult");
+		return mv;
+	}
 }
+
+
+

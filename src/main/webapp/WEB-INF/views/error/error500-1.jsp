@@ -1,17 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: f1c04
-  Date: 2021/05/10
-  Time: 3:31 오후
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" isErrorPage="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isErrorPage="true"%>
+
+<%response.setStatus(200); %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
 <body>
 <h1>연산오류입니다. (error500-1)</h1>
-<h1><%=exception%></h1>
+<h1><%=exception %></h1>
 </body>
 </html>

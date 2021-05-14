@@ -1,158 +1,173 @@
 package net.spring.controller;
 
-import com.kosta.business.DeptDAO;
-import com.kosta.business.EmpDAO;
-import com.kosta.model.UserVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kosta.model.DeptDAO;
+import com.kosta.model.EmpDAO;
+import com.kosta.model.UserVO;
+
 @Controller
 public class KostaController {
-    @Autowired
-    DeptDAO deptDAO;
 
-    @Autowired
-    EmpDAO empDAO;
+	@Autowired
+	DeptDAO deptDAO;
+	@Autowired
+	EmpDAO empDAO;
 
-    @RequestMapping(value = {"/sample1.do", "/test/sample2.do"})
-    public ModelAndView test1() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("title", "Îß§ÌïëÏ£ºÏÜåÎ•º Ïó¨Îü¨Í∞ú ÏÇ¨Ïö©Í∞ÄÎä•ÌïòÎã§.");
-        //ÌéòÏù¥ÏßÄ Ïù¥Î¶ÑÏù¥ ÏóÜÎã§Î©¥ defaultÎ°ú ÏöîÏ≤≠Ï£ºÏÜåÏù¥Î¶ÑÏù¥ ÏÇ¨Ïö©
-        //sample1.do -> WEB-INF/views/sample1.jsp
-        //test/sample2.do -> WEB-INF/views/test/sample2.jsp
-        return mv;
-    }
+	@RequestMapping(value = { "/sample1.do", "/test/sample2.do" })
+	public ModelAndView test1() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("title", "∏ «Œ¡÷º“∏¶ ø©∑Ø∞≥ ªÁøÎ ∞°¥…«œ¥Ÿ");
+		// ∆‰¿Ã¡ˆ ¿Ã∏ß¿Ã æ¯¥Ÿ∏È default∑Œ ø‰√ª¡÷º“ ¿Ã∏ß¿Ã ªÁøÎµ»¥Ÿ.
+		// /sample1.do -> WEB-INF/views/sample1.jsp
+		// /test/sample2.do -> WEB-INF/views/test/sample2.jsp
 
-//    @RequestMapping(value = "/sample3.do", params = {"userid=abc", "userpass", "!email"})
-//    public ModelAndView test2() {
-//        ModelAndView mv = new ModelAndView();
-//        mv.addObject("title", "Îß§ÌïëÏ£ºÏÜåÏóê param ÏÇ¨Ïö©");
-//        mv.setViewName("sample3Result");
-//        return mv;
-//    }
+		return mv;
+	}
 
-    @RequestMapping(value = "/sample3.do")
-    public ModelAndView test2(@RequestParam("userid") String id,
-                              int userpass,
-                              @RequestParam("email") String email2,
-                              HttpServletRequest request,
-                              Map<String, Object> userinfo,
-                              UserVO user ) {
-        System.out.println("id=" + id);
-        System.out.println("userpw=" + userpass);
-        System.out.println("email2=" + email2);
-        System.out.println("userinfo=" + userinfo);
-        System.out.println("user=" + user);
+	@RequestMapping(value = "sample3.do")
+	public ModelAndView test2(@RequestParam("userid") String id, int userpass, @RequestParam("email") String email2,
+			HttpServletRequest request, Map<String, Object> userinfo, UserVO user) {
+		ModelAndView mv = new ModelAndView();
+		System.out.println("id : " + id);
+		System.out.println("pass : " + userpass);
+		System.out.println("email : " + email2);
+		System.out.println("userinfo : " + userinfo);
+		System.out.println("user : " + user);
+		mv.addObject("title", "∏ «Œ¡÷º“∏¶ paramªÁøÎ«œ±‚");
+		mv.addObject("id", id);
+		mv.addObject("userpass", userpass);
+		mv.addObject("email2", email2);
+		mv.addObject("userinfo", userinfo);
+		mv.addObject("user", user);
+		// request∑Œ πﬁæ∆øÕµµ µ 
+		String email = request.getParameter("email");
+		mv.addObject("email", email);
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("title", "ÌååÎùºÎØ∏ÌÑ∞ Î∞õÍ∏∞");
-        mv.addObject("id", id);
-        mv.addObject("userpass", userpass);
-        mv.addObject("email2", email2);
+		mv.setViewName("sample3Result");
 
-        mv.addObject("userinfo", userinfo);
-        mv.addObject("user", user);
+		return mv;
+	}
 
-        String email = request.getParameter("email");
-        mv.addObject("email", email);
+	// return¿Ã String : ∆‰¿Ã¡ˆ¿Ã∏ß¿Ã return...«ÿ¥Ápage∑Œ forward
+	// model : pageø° ¿¸¥ﬁ
+	@RequestMapping(value = "sample4.do")
+	public String test4(Model model, String myname, HttpSession session) {
+		model.addAttribute("title", "page¿Ã∏ß return πÊπ˝");
+		System.out.println("myname: " + myname); // ?myname=yoon ¡÷º“ø° √ﬂ∞°«œ∏È ≥™ø»
+		UserVO user = new UserVO();
+		user.setEmail("requestø° ¿˙¿Â«— ¿Ã∏ﬁ¿œ");
+		model.addAttribute("user", user);
 
-        mv.setViewName("sample3Result");
-        return mv;
-    }
+		UserVO user2 = new UserVO();
+		user2.setEmail("ººº«ø° ¿˙¿Â«— ¿Ã∏ﬁ¿œ");
+		session.setAttribute("user", user2);
+		return "sample3Result";
+	}
 
-    //returnÏù¥ String: ÌéòÏù¥ÏßÄÏù¥Î¶ÑÏù¥ return ... Ìï¥Îãπ pageÎ°ú forward
-    //Model: pageÏóê Ï†ÑÎã¨
-    @RequestMapping(value = "/sample4.do")
-    public String test4(Model model, String myname, HttpSession session) {
-        model.addAttribute("title", "pageÏù¥Î¶Ñ returnÎ∞©Î≤ï");
-        System.out.println("myname=" + myname);
+	@RequestMapping(value = "sample5.do")
+	public void test5(HttpServletRequest request, HttpSession session) {
+		String cpath = request.getContextPath();
+		System.out.println(cpath);
+		System.out.println(request.getMethod());
+		System.out.println(request.getRequestURL());
+		System.out.println(session.getServletContext().getRealPath("."));
+	}
 
-        UserVO user = new UserVO();
-        user.setEmail("request@naver.com");
-        model.addAttribute("user", user);
+	@RequestMapping(value = "sample6.do")
+	@ResponseBody
+	public String test6() {
+		return "hello~";
+	}
 
-        UserVO user2 = new UserVO();
-        user2.setEmail("session@naver.com");
-        session.setAttribute("user", user2);
+	@RequestMapping("emp/allmanager.do")
+	public String test7(Model mydata) {
 
-        return "sample3Result";
-    }
+		mydata.addAttribute("mlist", deptDAO.selectAllManager());
+		return "emp/allmanager";
+	}
 
-    @RequestMapping(value = "sample5.do")
-    public void test5(HttpServletRequest request, HttpSession session) {
-        String cPath = request.getContextPath();
-        System.out.println(cPath);
-        System.out.println(request.getMethod());
-        System.out.println(request.getRequestURI());
-        System.out.println(session.getServletContext().getRealPath("."));
-    }
+	// ∫Œº≠¡∂»∏
+	@RequestMapping("emp/alldeptlist.do")
+	public String alldeptlist(Model mydata) {
+		mydata.addAttribute("dlist", deptDAO.selectAll());
+		return "emp/alldeptlist";
+	}
 
-    @RequestMapping(value = "sample6.do")
-    @ResponseBody
-    public String test6() {
-        return "<h1>Hello~</h1>";
-    }
+	// ∫Œº≠ªÛºº
+	@RequestMapping("emp/empByDept.do")
+	public String empByDept(Model mydata, int deptid) {
+		mydata.addAttribute("emplist", empDAO.selectByDept(deptid));
+		return "emp/emplist";
+	}
 
-    @RequestMapping("emp/allmanager.do")
-    public String allManagerList(Model mydata) {
-        mydata.addAttribute("mlist", deptDAO.findAllManager());
-        return "emp/allmanager";
-    }
+	// job¡∂»∏
+	@RequestMapping("emp/alljoblist.do")
+	public String alljoblist(Model mydata) {
+		mydata.addAttribute("jlist", empDAO.selectAllJobs());
+		return "emp/alljoblist";
+	}
 
-    @RequestMapping("emp/alldeptlist.do")
-    public String allDeptList(Model mydata) {
-        mydata.addAttribute("dlist", deptDAO.findAll());
-        return "emp/alldeptlist";
-    }
+	// jobªÛºº
+	@RequestMapping("emp/empByJob.do")
+	public String empByJob(Model mydata, String jobid) throws IOException {
 
-    @RequestMapping("emp/empByDept.do")
-    public String empByDept(Model mydata, int deptid) {
-        mydata.addAttribute("emp_all", empDAO.selectByDept(deptid));
-        return "emp/emplist";
-    }
+		// 1.ø¨ªÍø¿∑˘
+		int a = 10/0;
+		// System.out.println(a);
 
-    @RequestMapping("emp/alljoblist.do")
-    public String alljoblist(Model mydata) {
-        mydata.addAttribute("jlist", empDAO.selectAllJobs());
-        return "emp/alljoblist";
-    }
+		// 2.ø¨ªÍ¿Ã æ∆¥— ±‚≈∏ø¿∑˘
+		ClassPathResource resource = new ClassPathResource("oracledb.properties");
+		System.out.println(resource.getFilename());
 
-    @RequestMapping("emp/empByJob.do")
-    public String empByJob(Model mydata, String jobid) {
-        mydata.addAttribute("emp_all", empDAO.selectByJob(jobid));
-        return "emp/emplist";
-    }
+		BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
-    @RequestMapping("emp/errorTest.do")
-    public void errorTest() throws IOException {
-        //1. Ïó∞ÏÇ∞Ïò§Î•ò
-//        int a = 10/0;
-//        System.out.println(a);
+		String s;
+		while ((s = br.readLine()) != null) {
+			System.out.println(s);
+		}
+		br.close();
 
-        //2. Ïó∞ÏÇ∞Ïò§Î•ò ÏïÑÎãå Í∏∞ÌÉÄÏò§Î•ò
-        ClassPathResource resource = new ClassPathResource("oracledb.properties");
-        System.out.println(resource.getFilename());
+		mydata.addAttribute("emplist", empDAO.selectByJobId(jobid));
+		return "emp/emplist";
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+	}
 
-        String s = br.readLine();
-        while ((s = br.readLine()) != null) {
-            System.out.println(s);
-        }
-        br.close();
-    }
+	// error test
+	@RequestMapping("emp/errorTest.do")
+	public void errorTest() throws IOException {
+		// 1.ø¨ªÍø¿∑˘
+		// int a = 10/0;
+		// System.out.println(a);
+
+		// 2.ø¨ªÍ¿Ã æ∆¥— ±‚≈∏ø¿∑˘
+		ClassPathResource resource = new ClassPathResource("oracledb.properties");
+		System.out.println(resource.getFilename());
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+
+		String s;
+		while ((s = br.readLine()) != null) {
+			System.out.println(s);
+		}
+		br.close();
+	}
+
 }

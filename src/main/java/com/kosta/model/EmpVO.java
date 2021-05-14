@@ -2,9 +2,10 @@ package com.kosta.model;
 
 import java.sql.Date;
 
-//DTO : Data Transfer Object
-//VO  : Value Object
+//DTO(Data Transfer Object)
+//VO(Value Object)
 public class EmpVO {
+	
 	private int employee_id;
 	private String first_name;
 	private String last_name;
@@ -90,8 +91,8 @@ public class EmpVO {
 		return hire_date;
 	}
 
-	public void setHire_date(Date hire_date) {
-		this.hire_date = hire_date;
+	public void setHire_date(Date date) {
+		this.hire_date = date;
 	}
 
 	public String getJob_id() {
@@ -137,7 +138,7 @@ public class EmpVO {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("EmpVo  [employee_id=").append(employee_id).append(", first_name=").append(first_name)
+		builder.append("EmpVO 직원정보 [employee_id=").append(employee_id).append(", first_name=").append(first_name)
 				.append(", last_name=").append(last_name).append(", email=").append(email).append(", phone_number=")
 				.append(phone_number).append(", hire_date=").append(hire_date).append(", job_id=").append(job_id)
 				.append(", salary=").append(salary).append(", commission_pct=").append(commission_pct)
@@ -145,6 +146,28 @@ public class EmpVO {
 				.append("]");
 		return builder.toString();
 	}
+	/*public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("占쏙옙占쏙옙占쏙옙호 : ").append(employee_id).append(", 占싱몌옙 : ").append(first_name)
+				.append(", 占쌨울옙 : ").append(salary);
+		return builder.toString();
+	}
+*/
+	
+	
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

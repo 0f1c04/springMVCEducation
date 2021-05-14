@@ -1,129 +1,148 @@
 package com.kosta.business;
 
-import com.kosta.model.EmpVO;
-import com.kosta.model.JobVO;
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.kosta.model.EmpVO;
+import com.kosta.model.JobVO;
 
 @Repository("empDAO_mybatis")
 public class EmpDAOMybatis implements EmpDAOInterface{
+	
+	@Autowired
+	SqlSession sqlsession;
+	
+	String namespace = "com.kosta.emp.";
+	
+	Logger logger = LoggerFactory.getLogger(EmpDAOMybatis.class);
+	
+	@Override
+	public EmpVO loginChk(int empid, String email) {
+		Map<String, Object> empInfo = new HashMap<>();
+		empInfo.put("empid", empid);
+		empInfo.put("email", email);
+		EmpVO emp = sqlsession.selectOne(namespace+"loginChk", empInfo);
+		return emp;
+	}
 
-    @Autowired
-    SqlSession sqlSession;
+	@Override
+	public List<JobVO> selectAllJobs() {
+		List<JobVO> joblist = sqlsession.selectList(namespace+"selectAllJobs");
+		//logger.info("{}∞«¿« job¿Ã ¿÷¥Ÿ.",joblist.size()); //placeholder
+		return joblist;
+	}
 
-    String namespace = "com.kosta.emp.";
+	@Override
+	public int deleteEmp(int empid) {
+		int result = sqlsession.delete(namespace + "delete", empid);
+		logger.info("{}∞« ªË¡¶.",result);
+		return result;
+	}
 
-    Logger logger = LoggerFactory.getLogger(EmpDAOMybatis.class);
+	@Override
+	public int updateEmp(EmpVO emp) {
+		int result = sqlsession.update(namespace + "update", emp);
+		logger.info("{}∞« ºˆ¡§.",result);
+		return result;
+	}
 
-    @Override
-    public EmpVO loginChk(int empid, String email) {
-        Map<String, Object> empInfo = new HashMap<>();
-        empInfo.put("empid", empid);
-        empInfo.put("email", email);
-        return sqlSession.selectOne(namespace + "loginChk", empInfo);
-    }
+	@Override
+	public int insertEmp(EmpVO emp) {
+		//emp.setPhone_number(null);
+		int insert = sqlsession.insert(namespace + "insert", emp);
+		logger.info("insert : {}",insert);
+		return insert;
+	}
 
-    @Override
-    public List<JobVO> selectAllJobs() {
-        List<JobVO> jlist = sqlSession.selectList(namespace+"selectAllJobs");
-        logger.info("{}Í±¥", jlist.size());
-        return sqlSession.selectList(namespace+"selectAllJobs");
-    }
+	@Override
+	public List<EmpVO> selectAll() {
+		List<EmpVO> alllist =  sqlsession.selectList(namespace + "selectAll");
+		logger.info("{}∞«¿« ¡˜ø¯∏Ò∑œ",alllist.size());
+		return alllist;
+	}
 
-    @Override
-    public int deleteEmp(int empid) {
-        int result = sqlSession.delete(namespace + "delete", empid);
-        logger.info("{}Í±¥Ïù¥ ÏÇ≠Ï†úÎêòÏóàÏäµÎãàÎã§.",result); //placeholder
-        return result;
-    }
+	@Override
+	public EmpVO selectbyId(int empid) {
+		EmpVO emp = sqlsession.selectOne(namespace + "selectById", empid);
+		logger.info("«—∞« : {}",emp);
+		return emp;
+	}
 
-    @Override
-    public int updateEmp(EmpVO emp) {
-        return sqlSession.update(namespace+"update", emp);
-    }
+	@Override
+	public List<EmpVO> selectByDept(int deptid) {
+		List<EmpVO> emplist = sqlsession.selectList(namespace+"selectByDept", deptid);
+		System.out.println("selectbydept : " + emplist.size());
+		return emplist;
+	}
 
-    @Override
-    public int insertEmp(EmpVO emp) {
-        return sqlSession.insert(namespace+"insert", emp);
-    }
+	@Override
+	public List<EmpVO> selectByJobId(String jobid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<EmpVO> selectAll() {
-        return sqlSession.selectList(namespace+"selectAll");
-    }
+	@Override
+	public List<EmpVO> selectBySalary(int minsal, int maxsal) {
+		Map<String, Integer> salMap = new HashMap<>();
+		salMap.put("min", minsal);
+		salMap.put("max", maxsal);
+		List<EmpVO> emplist = sqlsession.selectList(namespace+"selectBySalary", salMap);
+		logger.info("selectBySalary : {}", emplist.size());
+		return emplist;
+	}
 
-    @Override
-    public EmpVO selectById(int empid) {
-        return sqlSession.selectOne(namespace+"selectById", empid);
-    }
+	@Override
+	public List<EmpVO> selectByHireDate(String sdate, String edate) {
+		Map<String, String> dateMap = new HashMap<>();
+		dateMap.put("sdate", sdate);
+		dateMap.put("edate", edate);
+		List<EmpVO> emplist = sqlsession.selectList(namespace+"selectByHireDate", dateMap);
+		System.out.println("selectByHireDate : " + emplist.size());
+		return emplist;
+	}
 
-    @Override
-    public List<EmpVO> selectByDept(int deptid) {
-        return sqlSession.selectList(namespace+"selectByDept", deptid);
-    }
+	@Override
+	public List<EmpVO> selectByHireDate2(Date sdate, Date edate) {
+		Map<String, Date> dateMap = new HashMap<>();
+		dateMap.put("sdate", sdate);
+		dateMap.put("edate", edate);
+		List<EmpVO> emplist = sqlsession.selectList(namespace+"selectByHireDate2", dateMap);
+		System.out.println("selectByHireDate2 : " + emplist.size());
+		return emplist;
+	}
 
-    @Override
-    public List<EmpVO> selectByJob(String jobid) {
-        return sqlSession.selectOne(namespace+"selectByJob", jobid);
-    }
+	@Override
+	public List<EmpVO> selectByChar(String ch) {
+		List<EmpVO> emplist = sqlsession.selectList(namespace+"selectByChar", "%"+ch+"%");
+		System.out.println("selectByChar : " + emplist.size());
+		return emplist;
+	}
 
-    @Override
-    public List<EmpVO> selectBySalary(int minsal, int maxsal) {
-        Map<String, Integer> salMap = new HashMap<>();
-        salMap.put("min", minsal);
-        salMap.put("max", maxsal);
+	@Override
+	public List<EmpVO> selectByCondition(int deptid, String jobid, int sal, Date hdate) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("deptid", deptid);
+		map.put("jobid", jobid);
+		map.put("sal", sal);
+		map.put("hdate", hdate);
+		List<EmpVO> emplist = sqlsession.selectList(namespace + "selectByCondition", map); 
+		System.out.println(emplist.size()+"∞«");
+		return emplist;
+	}
 
-        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectBySalary", salMap);
-        return emplist;
-    }
+	@Override
+	public List<EmpVO> selectByDeptMany(List<Integer> deptidList) {
+		List<EmpVO> emplist = sqlsession.selectList(namespace + "selectByDeptMany", deptidList); 
+		System.out.println(emplist.size()+"∞«");
+		return emplist;
+	}
 
-    @Override
-    public List<EmpVO> selectByDate(String sdate, String edate) {
-        Map<String, String> salMap = new HashMap<>();
-        salMap.put("sdate", sdate);
-        salMap.put("edate", edate);
-
-        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByDate", salMap);
-        return emplist;
-    }
-
-    @Override
-    public List<EmpVO> selectByDate2(Date sdate, Date edate) {
-        Map<String, Date> salMap = new HashMap<>();
-        salMap.put("sdate", sdate);
-        salMap.put("edate", edate);
-
-        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByDate", salMap);
-        return emplist;
-    }
-
-    @Override
-    public List<EmpVO> selectByName(String ch) {
-        return sqlSession.selectOne(namespace+"selectByName", ch);
-    }
-
-    @Override
-    public List<EmpVO> selectByCondition(int deptid, String jobid, int sal, Date hdate) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("deptid", deptid);
-        map.put("jobid", jobid);
-        map.put("sal", sal);
-        map.put("hdate", hdate);
-        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByCondition", map);
-        return emplist;
-    }
-
-    @Override
-    public List<EmpVO> selectByDeptMany(List<Integer> deptlist) {
-        List<EmpVO> emplist = sqlSession.selectList(namespace+"selectByDeptMany", deptlist);
-        return emplist;
-    }
 }

@@ -1,139 +1,96 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.emp">
 
+    <!-- 이름이 다를 케이스만 맞춰주기 위해 씀 -->
     <resultMap type="evo" id="empResult">
         <result property="employee_id" column="employee_id"/>
         <result property="first_name" column="first_name"/>
-        <result property="last_name" column="last_name"/>
-        <result property="email" column="email"/>
-        <result property="phone_number" column="phone_number"/>
-        <result property="hire_date" column="hire_date"/>
-        <result property="job_id" column="job_id"/>
-        <result property="salary" column="salary"/>
-        <result property="commission_pct" column="commission_pct"/>
-        <result property="manager_id" column="manager_id"/>
-        <result property="department_id" column="department_id"/>
     </resultMap>
 
-    <select id="selectAll" resultMap="empResult">
-        select *
-        from employees
+    <select id="selectAll" resultType="evo">
+        select * from employees order by 1
     </select>
     <select id="selectById" resultType="evo" parameterType="int">
-        select *
-        from employees
-        where employee_id = #{employee_id}
+        select * from employees where employee_id = #{bb}
     </select>
-    <select id="selectByDept" resultType="evo" parameterType="int">
-        select *
-        from employees
-        where department_id = #{department_id}
-    </select>
-    <select id="selectByJob" resultType="evo" parameterType="String">
-        select *
-        from employees
-        where job_id = #{job_id}
-    </select>
-    <!--    <select id="selectBySalary" resultType="evo" parameterType="evo">-->
-    <!--        select * from employees where salary between #{} and #{}-->
-    <!--    </select>-->
-    <!--    <select id="selectByDate" resultType="evo" parameterType="String">-->
-    <!--        select * from employees " + " where hire_date between #{} and #{}-->
-    <!--    </select>-->
-    <select id="selectByName" resultType="evo" parameterType="String">
-        select *
-        from employees
-        where first_name like #{first_name}
-    </select>
-    <select id="selectAllJobs" resultType="com.kosta.model.JobVO">
-        select *
-        from jobs
-        order by 1
-    </select>
-
-
-    <insert id="insert" parameterType="dvo">
-        insert into employees
-        values (#{employee_id}, #{first_name}, #{last_name}, #{email}, #{phone_number}, #{hire_date}, #{job_id},
-                #{salary}, #{commission_pct}, #{manager_id}, #{department_id})
+    <!-- jdbcType=VARCHAR로 주면 null이여도 varchar 타입이 돼서 입력이 가능함 -->
+    <insert id="insert" parameterType="evo">
+        insert into employees(employee_id, first_name, last_name, email, phone_number,
+                              hire_date, job_id, salary, commission_pct, manager_id, department_id)
+        values(#{employee_id},#{first_name},#{last_name},#{email},#{phone_number},
+               #{hire_date},#{job_id},#{salary},#{commission_pct},#{manager_id},#{department_id})
     </insert>
-    <update id="update" parameterType="com.kosta.model.EmpVO">
+    <update id="update" parameterType="evo">
         update employees
-        set FIRST_NAME=#{first_name},
-            LAST_NAME=#{last_name},
-            EMAIL =#{email},
-            PHONE_NUMBER=#{phone_number},
-            HIRE_DATE=#{hire_date},
-            JOB_ID=#{job_id},
-            SALARY=#{salary},
-            COMMISSION_PCT=#{commission_pct},
-            MANAGER_ID=#{manager_id},
-            DEPARTMENT_ID=#{department_id}
-        where EMPLOYEE_ID = #{employee_id}
+        set first_name=#{first_name}, last_name=#{last_name}, email=#{email}, phone_number=#{phone_number},
+            hire_date=#{hire_date}, job_id=#{job_id}, salary=#{salary}, commission_pct=#{commission_pct},
+            manager_id=#{manager_id}, department_id=#{department_id}
+        where employee_id = #{employee_id}
     </update>
+
     <delete id="delete" parameterType="int">
-        delete
-        from employees
-        where EMPLOYEE_ID = #{employee_id}
+        delete from employees where employee_id = #{employee_id}
     </delete>
 
     <select id="loginChk" parameterType="map" resultType="evo">
-        select *
-        from employees
-        where employee_id = #{empid}
-          and email = #{email}
+        select * from employees where employee_id = #{empid} and email=#{email}
     </select>
 
+    <select id="selectAllJobs" resultType="com.kosta.model.JobVO">
+        select * from jobs order by 1
+    </select>
+
+    <select id="selectByDept" resultType="evo" parameterType="int">
+        select * from employees where department_id=#{aa}
+    </select>
     <select id="selectBySalary" resultType="evo" parameterType="map">
-        select *
-        from EMPLOYEES
-        where salary between #{min} and #{max}
+        select * from employees where salary between #{min} and #{max}
+    </select>
+    <select id="selectByHireDate" resultType="evo" parameterType="map">
+        select * from employees where hire_date between #{sdate} and #{edate}
+    </select>
+    <select id="selectByHireDate2" resultType="evo" parameterType="map">
+        select * from employees where hire_date between #{sdate} and #{edate}
+    </select>
+    <select id="selectByChar" resultType="evo" parameterType="string">
+        select * from employees where first_name like #{aa}
     </select>
 
-    <select id="selectByDate" resultType="evo" parameterType="map">
-        select *
-        from EMPLOYEES
-        where HIRE_DATE between #{sdate} and #{edate}
-    </select>
-
-    <select id="selectByDate2" resultType="evo" parameterType="map">
-        select *
-        from EMPLOYEES
-        where HIRE_DATE between #{sdate} and #{edate}
-    </select>
-
-    <select id="selectByCondition" parameterType="map" resultType="evo">
-        select *
-        from EMPLOYEES
-        <where>
-            <if test="jobid != '' and jobid != null">
-                JOB_ID = #{jobid}
+    <select id="selectByCondition" resultType="evo" parameterType="map">
+        select * from employees
+        <where> <!-- test속성에 있는 이름은 map안에 있는 키의 값이다. -->
+            <if test="jobid!='' and jobid!=null ">
+                job_id = #{jobid}
             </if>
-            <if test="deptid != 0 and deptid != null">
-                and DEPARTMENT_ID = #{deptid}
+            <if test="deptid!=0 and deptid!=null ">
+                and department_id = #{deptid}
             </if>
-            <if test="sal != 0 and sal != null">
-                and SALARY >= #{sal}
+            <if test="sal!=0 and sal!=null ">
+                and salary >= #{sal}
             </if>
-            <if test="hdate != null">
-                and HIRE_DATE >= #{hdate, jdbcType=DATE}
+            <if test="hdate!=null ">
+                and hire_date >= #{hdate}
             </if>
         </where>
         order by employee_id
     </select>
 
     <sql id="empQuery">
-        select *
-        from EMPLOYEES
+        select * from employees
     </sql>
 
     <select id="selectByDeptMany" parameterType="java.util.List" resultType="evo">
         <include refid="empQuery"/>
-        where DEPARTMENT_ID in
-        <foreach collection="list" index="index" item="dept" open="("  separator="," close=")">
-            #{dept}
+        where department_id in
+        <foreach collection="list" index="index" item="deptlist" open="("  separator="," close=")">
+            #{deptlist}
         </foreach>
         order by employee_id
     </select>
+
 </mapper>
+
+
