@@ -31,6 +31,10 @@
 
 <!-- 표준액션: 컴파일 후 합친다. -->
 <jsp:include page="../common/header.jsp"></jsp:include>
+<c:set var="cpath" value="${pageContext.request.contextPath}"/>
+<img alt="이미지" src="${cpath}/images/duke.png" width="100px" height="100px">
+<img alt="이미지2" src="${cpath}/images/duke2.png" width="100px" height="100px">
+
 <br>
 <a href="empInsert.do">신규등록</a>
 <br>
